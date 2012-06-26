@@ -1,7 +1,6 @@
 package
 {
 	import org.flixel.*;
-	import maps.*;
 
 	public class PlayState extends FlxState
 	{
