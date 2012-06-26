@@ -8,24 +8,14 @@ package
 	 */
 	public class Map extends FlxTilemap
 	{
-		public var collidables:FlxGroup = new FlxGroup();
-		
-		public var exitNorth:Class;
-		public var exitWest:Class;
-		public var exitEast:Class;
-		public var exitSouth:Class;
+		private var _collidables:FlxGroup = new FlxGroup();
+		public function get Collidables():FlxGroup { return _collidables; }
 
 		public var playerEntryPoint:FlxPoint;
 
 		public function Map()
 		{
-			exitNorth = null;
-			exitWest = null;
-			exitEast = null;
-			exitSouth = null;
-
-			playerEntryPoint = new FlxPoint();
-
+			super();
 			onInit();
 		}
 
@@ -34,53 +24,14 @@ package
 		 */
 		public function onInit():void
 		{
-
+			
 		}
-
-		public function onExitNorth(playerEntryPoint:FlxPoint = null):*
-		{
-			var rv:* = null;
-			if( exitNorth != null )
-			{
-				rv = new exitNorth();
-				rv.playerEntryPoint = playerEntryPoint;
-			}
-			return rv;
-		}
-
-		public function onExitWest(playerEntryPoint:FlxPoint = null):Map
-		{
-			var rv:* = null;
-			if( exitWest != null )
-			{
-				rv = new exitWest();
-				rv.playerEntryPoint = playerEntryPoint;
-			}
-			return rv;
-		}
-
-		public function onExitEast(playerEntryPoint:FlxPoint = null):Map
-		{
-			var rv:* = null;
-			if( exitEast != null )
-			{
-				rv = new exitEast();
-				rv.playerEntryPoint = playerEntryPoint;
-			}
-			return rv;
-		}
-
-		public function onExitSouth(playerEntryPoint:FlxPoint = null):Map
-		{
-			var rv:* = null;
-			if( exitSouth != null )
-			{
-				rv = new exitSouth();
-				rv.playerEntryPoint = playerEntryPoint;
-			}
-			return rv;
-		}
-
+		
+		/**
+		 * Loads a level.
+		 * @param	map
+		 * @param	graphic
+		 */
 		public function loadLevel(map:Class, graphic:Class):void
 		{
 			var xml:XML = Utilities.getXML(map);
@@ -90,6 +41,10 @@ package
 			loadCollision(xml.Collidables[0]);
 		}
 		
+		/**
+		 * Loads the collision into collidables.
+		 * @param	xml
+		 */
 		public function loadCollision(xml:XML):void
 		{
 			if (xml)
@@ -105,7 +60,7 @@ package
 						{
 							var obj:FlxObject = new FlxObject(col * 16, rowNum * 16, 16, 16);
 							obj.immovable = true;
-							collidables.add(obj);
+							_collidables.add(obj);
 						}
 					}
 					rowNum++;

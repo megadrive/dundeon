@@ -7,12 +7,13 @@ package
 	{
 		public var player:TestSprite = new TestSprite();
 
-		private var _map:Dungeon01 = new Dungeon01();
+		private var _map:Map = new Map();
 
 		override public function create():void
 		{
 			super.create();
 
+			_map.loadLevel(Assets.DUNGEON_01_MAP, Assets.DUNGEON_01_GFX);
 			add(_map);
 
 			player.x = FlxG.width / 2;
@@ -24,7 +25,7 @@ package
 		override public function update():void
 		{
 			super.update();
-			FlxG.collide(player, _map.collidables);
+			FlxG.collide(player, _map.Collidables);
 		}
 	}
 }

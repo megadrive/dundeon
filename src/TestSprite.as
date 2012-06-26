@@ -108,7 +108,7 @@ package
 				obj.y += gridSize;
 			}
 			
-			return FlxG.overlap(obj, currentMap.collidables);
+			return FlxG.overlap(obj, currentMap.Collidables);
 		}
 	}
 }

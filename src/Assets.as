@@ -6,10 +6,10 @@ package
 	 */
 	public class Assets
 	{
-		[Embed(source="../assets/dungeon-01-csv.oel", mimeType="application/octet-stream")]
+		[Embed(source="../assets/test-overworld.oel", mimeType="application/octet-stream")]
 		public static const DUNGEON_01_MAP:Class;
 		
-		[Embed(source = "../assets/dungeon-01.png")]
+		[Embed(source = "../assets/overworldGrass.png")]
 		public static const DUNGEON_01_GFX:Class;
 	}
 }
