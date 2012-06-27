@@ -8,6 +8,7 @@ package
 		public var player:TestSprite = new TestSprite();
 
 		private var _map:Map = new Map();
+		private var grid:Grid = new Grid(0, 0, 0, 0);
 
 		override public function create():void
 		{
