@@ -3,6 +3,8 @@ package
 	import flash.display.Bitmap;
 	import flash.ui.Mouse;
 	
+	import flashx.textLayout.formats.Float;
+	
 	import org.flixel.*;
 	
 	public class Square extends FlxSprite
@@ -13,10 +15,15 @@ package
 		public var squareImgOverlay:Bitmap = new SQUARE_GFX;
 		private var hasBeenStamped:Boolean = false;
 		private var selectedByCursor:Boolean = false;
+		private var defaultSpriteAlphaValue:Number = 0.3;
+		private var mediumSpriteAlphaValue:Number = 0.6;
+		private var maximumSpriteAlphaValue:Number = 0.8;
 		
 		public function Square(X:Number = 0, Y:Number = 0, Width:Number = 0, Height:Number = 0)
 		{			
 			super(X, Y, SQUARE_GFX);
+			
+			this.alpha = defaultSpriteAlphaValue;
 		}
 		
 		override public function update():void
@@ -28,17 +35,19 @@ package
 			{
 				if(FlxG.mouse.justPressed())
 				{
-					this.color = 0x5050FF;
+					this.color = 0x4040FF;
+					this.alpha = maximumSpriteAlphaValue;
 					this.selectedByCursor = true;
 				}
-				else if(FlxG.mouse.pressed()&& !selectedByCursor)
+				else if(FlxG.mouse.pressed() && !selectedByCursor)
 				{
 					this.color = 0x8888FF;
+					this.alpha = mediumSpriteAlphaValue;
 					this.selectedByCursor = true;
 				}
 				else if(!selectedByCursor)
 				{
-					this.color = 0xAAAAFF
+					this.color = 0xAAAAFF;
 				}
 			}
 			else if(this.color!=0xFFFFFF && !this.selectedByCursor)
@@ -78,6 +87,11 @@ package
 				
 				this.color += colorToAdd;
 				// I would never feel sorry for you.
+			}
+			
+			if(this.alpha != defaultSpriteAlphaValue && !selectedByCursor)
+			{
+				this.alpha = defaultSpriteAlphaValue;
 			}
 		}
 	}
