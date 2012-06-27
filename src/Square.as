@@ -14,10 +14,14 @@ package
 		public var squareImg:Bitmap = new SQUARE_GFX;
 		public var squareImgOverlay:Bitmap = new SQUARE_GFX;
 		private var hasBeenStamped:Boolean = false;
-		private var selectedByCursor:Boolean = false;
+		public var selectedByCursor:Boolean = false;
 		private var defaultSpriteAlphaValue:Number = 0.3;
 		private var mediumSpriteAlphaValue:Number = 0.6;
 		private var maximumSpriteAlphaValue:Number = 0.8;
+		
+		public var grid:Grid = null;
+		public var gridX:int = 0;
+		public var gridY:int = 0;
 		
 		public function Square(X:Number = 0, Y:Number = 0, Width:Number = 0, Height:Number = 0)
 		{			
@@ -39,7 +43,7 @@ package
 					this.alpha = maximumSpriteAlphaValue;
 					this.selectedByCursor = true;
 				}
-				else if(FlxG.mouse.pressed() && !selectedByCursor)
+				else if(FlxG.mouse.pressed() && !selectedByCursor && grid.isCellParallelToLatest(this))
 				{
 					this.color = 0x8888FF;
 					this.alpha = mediumSpriteAlphaValue;
