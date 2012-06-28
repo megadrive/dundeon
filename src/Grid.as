@@ -41,6 +41,8 @@ package
 		 */
 		public override function update():void
 		{
+			var tmpSquare:Square // this does a very important thing don't question it
+			
 			for each(var x:Array in grid)
 			{
 				for each(var square:Square in x)
@@ -63,9 +65,10 @@ package
 						// CONTINUE SELECTION - User is dragging from a previously selected square
 						else if(FlxG.mouse.pressed() && !square.selectedByCursor && isCellParallelToLatest(square))
 						{
-							var tmpSquare:Square = selected[selected.length - 1];	 // Grab the square selected before this
-							tmpSquare.setLastSelected(false);						// And make its last selected bool false
-							square.setLastSelected(true);							// So the new square can be last selected
+							// BLINKING LOGIC //
+							tmpSquare = selected[selected.length - 1];	// Grab the square selected before this
+							tmpSquare.setLastSelected(false);			// And make its last selected bool false
+							square.setLastSelected(true);				// So the new square can be last selected
 							
 							square.setColor(0x9999FF);
 							square.setAlpha(square.MEDIUM_SPRITE_ALPHA);
@@ -76,9 +79,10 @@ package
 						// for some ungodly reason
 						else if(FlxG.mouse.pressed() && square.selectedByCursor && isCellParallelToLatest(square))
 						{
-							var tmpSquare:Square = selected[selected.length - 1];	 // Grab the square selected before this
-							tmpSquare.setLastSelected(false);						// And make its last selected bool false
-							square.setLastSelected(true);							// So the new square can be last selected
+							// BLINKING LOGIC //
+							tmpSquare = selected[selected.length - 1]; 	// Grab the square selected before this
+							tmpSquare.setLastSelected(false);			// And make its last selected bool false
+							square.setLastSelected(true);				// So the new square can be last selected
 							
 							square.setColor(0x5858FF);
 							selected.push(square);							
