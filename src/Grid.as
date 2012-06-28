@@ -35,39 +35,53 @@ package
 			}
 		}
 		
+		/**
+		 * Handles most grid and square logic
+		 * Primarily as it relates to mouse cursor movement and selection
+		 */
 		public override function update():void
 		{
 			for each(var x:Array in grid)
 			{
 				for each(var square:Square in x)
 				{
+					// Unselect current square upon user releasing the mouse button, should the square be selected
 					if(!FlxG.mouse.pressed() && square.selectedByCursor) square.selectedByCursor = false;
 					
+					// Check if cursor's position is over the current square
 					if(FlxG.mouse.screenX >= square.x && FlxG.mouse.screenX < square.x + square.width
 						&& FlxG.mouse.screenY >= square.y && FlxG.mouse.screenY < square.y + square.height)
 					{
+						// NEW SELCTION - User has started selecting squares
 						if(FlxG.mouse.justPressed())
 						{
 							square.setColor(square.MAXIMUM_SPRITE_SELECTED_COLOR);
 							square.setAlpha(square.MAXIMUM_SPRITE_ALPHA);
 							square.setSelected(true);
 						}
+						// CONTINUE SELECTION - User is dragging from a previously selected square
 						else if(FlxG.mouse.pressed() && !square.selectedByCursor && isCellParallelToLatest(square))
 						{
 							square.setColor(square.MEDIUM_SPRITE_SELECTED_COLOR);
 							square.setAlpha(square.MEDIUM_SPRITE_ALPHA);
 							square.setSelected(true);
 						}
+						// NO SELECTION - Square is being hovered over, but is not selected
 						else if(!square.selectedByCursor)
 						{
 							square.setColor(square.DEFAULT_SPRITE_SELECTED_COLOR);
 						}
 					}
+					// Square does not have the mouse cursor hovering over it,
+					// so check if it has recently been hovered over
 					else if(square.color!=square.DEFAULT_SPRITE_COLOR && !square.selectedByCursor)
 					{
+						// Fade cursor sprite colour to white (assumed defualt)
 						square.fadeSpriteToWhite();
 					}
 					
+					// If square has recently been selected, but is no longer selected,
+					// reset the square sprite's alpha value to default.
 					if(square.alpha != square.DEFAULT_SPRITE_ALPHA && !square.selectedByCursor)
 					{
 						square.setAlpha(square.DEFAULT_SPRITE_ALPHA);
