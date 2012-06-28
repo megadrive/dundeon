@@ -7,7 +7,7 @@ package
 		public var player:TestSprite = new TestSprite();
 
 		private var _map:Map = new Map();
-		private var _grid:Grid = new Grid(0, 0, 100, 100);	
+		private var _grid:Grid;	
 
 		override public function create():void
 		{
@@ -15,6 +15,8 @@ package
 
 			_map.loadLevel(Assets.DUNGEON_01_MAP, Assets.DUNGEON_01_GFX);
 			add(_map);
+			
+			_grid = new Grid(0, 0, 100, 100);
 			_grid.addNestedArrayToFlxG();
 
 			player.x = FlxG.width / 2;
