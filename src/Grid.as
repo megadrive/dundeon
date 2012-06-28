@@ -51,7 +51,7 @@ package
 					// Check if cursor's position is over the current square
 					if(FlxG.mouse.screenX >= square.x && FlxG.mouse.screenX < square.x + square.width
 						&& FlxG.mouse.screenY >= square.y && FlxG.mouse.screenY < square.y + square.height)
-					{
+					{					
 						// NEW SELCTION - User has started selecting squares
 						if(FlxG.mouse.justPressed())
 						{
@@ -63,10 +63,25 @@ package
 						// CONTINUE SELECTION - User is dragging from a previously selected square
 						else if(FlxG.mouse.pressed() && !square.selectedByCursor && isCellParallelToLatest(square))
 						{
-							square.setColor(square.MEDIUM_SPRITE_SELECTED_COLOR);
+							var tmpSquare:Square = selected[selected.length - 1];	 // Grab the square selected before this
+							tmpSquare.setLastSelected(false);						// And make its last selected bool false
+							square.setLastSelected(true);							// So the new square can be last selected
+							
+							square.setColor(0x9999FF);
 							square.setAlpha(square.MEDIUM_SPRITE_ALPHA);
 							square.setSelected(true);
 							selected.push(square);
+						}
+						// OVERLAPPING SELECTION - User is dragging over an already selected square
+						// for some ungodly reason
+						else if(FlxG.mouse.pressed() && square.selectedByCursor && isCellParallelToLatest(square))
+						{
+							var tmpSquare:Square = selected[selected.length - 1];	 // Grab the square selected before this
+							tmpSquare.setLastSelected(false);						// And make its last selected bool false
+							square.setLastSelected(true);							// So the new square can be last selected
+							
+							square.setColor(0x5858FF);
+							selected.push(square);							
 						}
 						// NO SELECTION - Square is being hovered over, but is not selected
 						else if(!square.selectedByCursor)
@@ -94,17 +109,20 @@ package
 		
 		/**
 		 * Checks if newly selected Square is parallel to the last selected Square
+		 * Params:
+		 * @square - The current square to check
+		 * @margin - the distance away a parallel square can be (default is 1)
 		 */
-		public function isCellParallelToLatest(square:Square):Boolean
+		public function isCellParallelToLatest(square:Square, margin:Number = 1):Boolean
 		{
-			populateSelected();
+		//	populateSelected();
 			var last:Square = selected[selected.length - 1];
 			var rv:Boolean = false;
 			
 			if(square.gridY == last.gridY)
 			{
 				// New Square is one square left or right of the current Square
-				if ( square.gridX == last.gridX - 1 || square.gridX == last.gridX + 1)
+				if ( square.gridX == last.gridX - margin || square.gridX == last.gridX + margin)
 				{
 					rv = true;
 				}
@@ -112,7 +130,7 @@ package
 			else if(square.gridX == last.gridX)
 			{
 				// New Square is one square above or below of the current Square
-				if ( square.gridY == last.gridY - 1 || square.gridY == last.gridY + 1)
+				if ( square.gridY == last.gridY - margin || square.gridY == last.gridY + margin)
 				{
 					rv = true;
 				}
