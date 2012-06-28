@@ -46,6 +46,7 @@ package
 		public function fadeSpriteToWhite():void
 		{
 			// This is the worst code ever, I am sorry. To myself. Not to you, mega.
+			// Don't worry, it's okay. It's not your fault you don't know how to use bitwise operators. :)
 			var colorToAdd:uint = 0x000000;
 			
 			if(uint("0x" + this.color.toString(16).substr(0,1) + "00000") < 0xF00000)

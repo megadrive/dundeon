@@ -58,6 +58,7 @@ package
 							square.setColor(square.MAXIMUM_SPRITE_SELECTED_COLOR);
 							square.setAlpha(square.MAXIMUM_SPRITE_ALPHA);
 							square.setSelected(true);
+							selected.push(square);
 						}
 						// CONTINUE SELECTION - User is dragging from a previously selected square
 						else if(FlxG.mouse.pressed() && !square.selectedByCursor && isCellParallelToLatest(square))
@@ -65,6 +66,7 @@ package
 							square.setColor(square.MEDIUM_SPRITE_SELECTED_COLOR);
 							square.setAlpha(square.MEDIUM_SPRITE_ALPHA);
 							square.setSelected(true);
+							selected.push(square);
 						}
 						// NO SELECTION - Square is being hovered over, but is not selected
 						else if(!square.selectedByCursor)
@@ -91,27 +93,6 @@ package
 		}
 		
 		/**
-		 * Populates "selected" array with a list of
-		 * all currently selected Squares in the grid
-		 */
-		public function populateSelected():void
-		{
-			// truncate selected
-			selected.length = 0;
-			
-			for each(var x:Array in grid)
-			{
-				for each(var y:Square in x)
-				{
-					if (y.selectedByCursor)
-					{
-						selected.push(y);
-					}
-				}
-			}
-		}
-		
-		/**
 		 * Checks if newly selected Square is parallel to the last selected Square
 		 */
 		public function isCellParallelToLatest(square:Square):Boolean
@@ -123,12 +104,18 @@ package
 			if(square.gridY == last.gridY)
 			{
 				// New Square is one square left or right of the current Square
-				if( square.gridX == last.gridX - 1 || square.gridX == last.gridX + 1) rv = true;
+				if ( square.gridX == last.gridX - 1 || square.gridX == last.gridX + 1)
+				{
+					rv = true;
+				}
 			}
 			else if(square.gridX == last.gridX)
 			{
 				// New Square is one square above or below of the current Square
-				if( square.gridY == last.gridY - 1 || square.gridY == last.gridY + 1) rv = true;
+				if ( square.gridY == last.gridY - 1 || square.gridY == last.gridY + 1)
+				{
+					rv = true;
+				}
 			}
 			
 			return rv;
