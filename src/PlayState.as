@@ -23,6 +23,7 @@ package
 			player.y = FlxG.height / 2;
 			player.currentMap = _map;
 			add(player);
+			_grid.addUnit(player);
 		}
 
 		override public function update():void

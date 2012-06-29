@@ -8,7 +8,8 @@ package
 	
 	public class Grid extends FlxObject
 	{
-		public var grid:Array; 								// This is the grid for the game board. It is a grid.
+		public var grid:Array; 								// Grid for the game board.
+		public var units:Array;								// List of all units on the game board.
 		public var squaresHoveredOver:Array = new Array(); 	// Squares that the mouse has hovered over
 		public var squaresInGrid:int = 11;					// Squares in the grid
 		public var squareSize:int = 16;						// The pixel size of the square's bitmap image
@@ -20,6 +21,7 @@ package
 			
 			FlxG.state.add(this);			
 			grid = new Array( new Array() );
+			units = new Array();
 			
 			for(var x:int = 0; x<squaresInGrid - 1; x++)
 			{
@@ -43,6 +45,18 @@ package
 		{
 			var tmpSquare:Square // this does a very important thing don't question it
 			
+			// RELEASED SELECTION - Cursor has just stopped highlighting squares
+			if(FlxG.mouse.justReleased())
+			{				
+				for each(var u:TestSprite in units)
+				{
+					// Give the unit told to move the list of moves to execute
+					if(u.selectedByCursor) u.setMovementArray(selected);
+				}
+				
+				selected.length = 0;
+			}
+			
 			for each(var x:Array in grid)
 			{
 				for each(var square:Square in x)
@@ -55,7 +69,7 @@ package
 						&& FlxG.mouse.screenY >= square.y && FlxG.mouse.screenY < square.y + square.height)
 					{					
 						// NEW SELCTION - User has started selecting squares
-						if(FlxG.mouse.justPressed())
+						if(FlxG.mouse.justPressed() && !square.selectedByCursor)
 						{
 							square.setColor(square.MAXIMUM_SPRITE_SELECTED_COLOR);
 							square.setAlpha(square.MAXIMUM_SPRITE_ALPHA);
@@ -77,7 +91,7 @@ package
 						}
 						// OVERLAPPING SELECTION - User is dragging over an already selected square
 						// for some ungodly reason
-						else if(FlxG.mouse.pressed() && square.selectedByCursor && isCellParallelToLatest(square))
+						else if(FlxG.mouse.pressed() && square.selectedByCursor && isCellParallelToLatest(square) && square!=selected[selected.length - 1])
 						{
 							// BLINKING LOGIC //
 							tmpSquare = selected[selected.length - 1]; 	// Grab the square selected before this
@@ -119,7 +133,6 @@ package
 		 */
 		public function isCellParallelToLatest(square:Square, margin:Number = 1):Boolean
 		{
-		//	populateSelected();
 			var last:Square = selected[selected.length - 1];
 			var rv:Boolean = false;
 			
@@ -153,6 +166,31 @@ package
 				for(var y:int = 0; y<squaresInGrid - 1; y++)
 				{
 					FlxG.state.add(grid[x][y]);
+				}
+			}
+		}
+		
+		/**
+		 * Adds a new unit into the units array
+		 */
+		public function addUnit(newUnit:TestSprite):void
+		{
+			units.push(newUnit);
+		}
+		
+		/**
+		 * Removes unit from array.
+		 * NOTE: Order of the array is not kept!
+		 */
+		public function removeUnit(unitToRemove:TestSprite):void
+		{
+			for(var i:int=0; i<units.length-1; i++)
+			{
+				// Have found the element we want to remove
+				if(units[i] == unitToRemove)
+				{
+					units[i] = units[i - 1];	// Duplicate the last element over the top of the current element
+					units.pop();				// And remove the original of the duplicate
 				}
 			}
 		}
