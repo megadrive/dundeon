@@ -15,6 +15,10 @@ package
 		public var squareSize:int = 16;						// The pixel size of the square's bitmap image
 		public var selected:Array = new Array();			// List of Squares selected by the mouse cursor
 		
+		public var cursorPreviousLocationX:Number = 0;
+		public var cursorPreviousLocationY:Number = 0;
+		public var cursorDirection:Number;				// Tracks direction of cursor movement
+		
 		public function Grid(X:Number = 0, Y:Number = 0, Width:Number = 0, Height:Number = 0)
 		{
 			super(X, Y, Width, Height);
@@ -75,14 +79,22 @@ package
 							square.setAlpha(square.MAXIMUM_SPRITE_ALPHA);
 							square.setSelected(true);
 							selected.push(square);
+							
+							cursorPreviousLocationX = FlxG.mouse.x;
+							cursorPreviousLocationY = FlxG.mouse.y;
 						}
 						// CONTINUE SELECTION - User is dragging from a previously selected square
-						else if(FlxG.mouse.pressed() && !square.selectedByCursor && isCellParallelToLatest(square))
+						else if(FlxG.mouse.pressed() && !square.selectedByCursor)
 						{
 							// BLINKING LOGIC //
 							tmpSquare = selected[selected.length - 1];	// Grab the square selected before this
 							tmpSquare.setLastSelected(false);			// And make its last selected bool false
 							square.setLastSelected(true);				// So the new square can be last selected
+							
+							if(!isCellParallelToLatest(square))
+							{
+								autocompletePath(selected[selected.length-1], square);
+							}
 							
 							square.setColor(0x9999FF);
 							square.setAlpha(square.MEDIUM_SPRITE_ALPHA);
@@ -121,6 +133,62 @@ package
 					{
 						square.setAlpha(square.DEFAULT_SPRITE_ALPHA);
 					}
+				}
+			}
+		}
+		
+		public function autocompletePath(previous:Square, current:Square):void
+		{
+			trace("Move to " + current.gridX + ", " + current.gridY);
+			var diffX:int = current.gridX - previous.gridX;
+			var diffY:int = current.gridY - previous.gridY;
+			var directionX:int=0;
+			if(diffX != 0) directionX = diffX / Math.abs(diffX);
+			var directionY:int=0;
+			if(diffY != 0) directionY = diffY / Math.abs(diffY);
+			var sq:Square;
+			
+			trace("the difference between (" + previous.gridX + ", " + previous.gridY + ") and (" + current.gridX + ", " + current.gridY + ") is " + diffX + ", " + diffY); 
+			trace("We need to move in a direction of " + directionX + ", " + directionY);
+
+			while(diffX != 0 || diffY != 0)
+			{
+				if(diffX!=0)
+				{
+					directionX = diffX / Math.abs(diffX);
+					
+					trace("X: the difference between (" + previous.gridX + ", " + previous.gridY + ") and (" + current.gridX + ", " + current.gridY + ") is " + diffX + ", " + diffY); 
+					trace("X: We need to move in a direction of " + directionX + ", " + directionY);
+					
+					sq = grid[(previous.gridX + directionX)][previous.gridY];
+					// add to array
+					sq.setColor(0xFF9999);
+					sq.setAlpha(sq.MEDIUM_SPRITE_ALPHA);
+					sq.setSelected(true);
+					selected.push(sq);
+					
+					previous = sq;
+					
+					diffX -= directionX;
+				}
+				
+				if(diffY!=0)
+				{
+					directionY = diffY / Math.abs(diffY);
+					
+					trace("Y: the difference between (" + previous.gridX + ", " + previous.gridY + ") and (" + current.gridX + ", " + current.gridY + ") is " + diffX + ", " + diffY); 
+					trace("Y: We need to move in a direction of " + directionX + ", " + directionY);
+
+					sq = grid[previous.gridX][previous.gridY + directionY];
+					// add to array
+					sq.setColor(0xFF9999);
+					sq.setAlpha(sq.MEDIUM_SPRITE_ALPHA);
+					sq.setSelected(true);
+					selected.push(sq);	
+					
+					previous = sq;
+					
+					diffY -= directionY;	
 				}
 			}
 		}
