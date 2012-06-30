@@ -96,7 +96,7 @@ package
 								autocompletePath(selected[selected.length-1], square);
 							}
 							
-							square.setColor(0x9999FF);
+							square.setColor(square.MEDIUM_SPRITE_SELECTED_COLOR);
 							square.setAlpha(square.MEDIUM_SPRITE_ALPHA);
 							square.setSelected(true);
 							selected.push(square);
@@ -110,7 +110,7 @@ package
 							tmpSquare.setLastSelected(false);			// And make its last selected bool false
 							square.setLastSelected(true);				// So the new square can be last selected
 							
-							square.setColor(0x5858FF);
+							square.setColor(square.MEDIUM_SPRITE_OVERLAP_COLOR);
 							selected.push(square);							
 						}
 						// NO SELECTION - Square is being hovered over, but is not selected

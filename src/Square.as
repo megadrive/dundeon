@@ -23,7 +23,8 @@ package
 		public var MEDIUM_SPRITE_ALPHA:Number = 0.6;
 		public var MAXIMUM_SPRITE_ALPHA:Number = 0.8;
 		public var DEFAULT_SPRITE_SELECTED_COLOR:uint = 0xAAAAFF;
-		public var MEDIUM_SPRITE_SELECTED_COLOR:uint = 0x8888FF;
+		public var MEDIUM_SPRITE_OVERLAP_COLOR:uint = 0x5858FF;
+		public var MEDIUM_SPRITE_SELECTED_COLOR:uint = 0x9999FF;
 		public var MAXIMUM_SPRITE_SELECTED_COLOR:uint = 0x4040FF;
 		public var BLINKING_SPRITE_COLOR:uint = 0xAFAFFF;
 		public var DEFAULT_SPRITE_COLOR:uint = 0xFFFFFF;
