@@ -4,10 +4,10 @@ package
 
 	public class PlayState extends FlxState
 	{
-		public var player:TestSprite = new TestSprite();
-
 		private var _map:Map = new Map();
 		private var _grid:Grid;	
+		
+		public var maxUnits:int = 6;
 
 		override public function create():void
 		{
@@ -19,17 +19,24 @@ package
 			_grid = new Grid(0, 0, 100, 100);
 			_grid.addNestedArrayToFlxG();
 
-			player.x = FlxG.width / 2;
-			player.y = FlxG.height / 2;
-			player.currentMap = _map;
-			add(player);
-			_grid.addUnit(player);
+			for(var i:int=0; i<maxUnits; i++)
+			{
+				var unit:TestSprite = new TestSprite();
+				unit.x = (Math.round(Math.random() * (i*2)) * _grid.squareSize) ;
+				unit.y = (Math.round(Math.random() * (i*2)) * _grid.squareSize) ;
+				unit.currentMap = _map;
+				add(unit);
+				_grid.addUnit(unit);
+			}
 		}
 
 		override public function update():void
 		{
 			super.update();
-			FlxG.collide(player, _map.Collidables);
+			for each(var u:TestSprite in _grid.units)
+			{
+				FlxG.collide(u, _map.Collidables);
+			}
 		}
 	}
 }

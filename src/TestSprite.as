@@ -2,12 +2,17 @@ package
 {
 	import flash.events.TimerEvent;
 	import flash.utils.Timer;
+	import flash.display.Bitmap;
 	import flash.ui.Keyboard;
 	
 	import org.flixel.*;
 	
 	public class TestSprite extends FlxSprite
 	{
+		[Embed(source = "../assets/testUnitBad.png")]
+		public static var UNIT_GFX:Class;
+		public var unitImg:Bitmap = new UNIT_GFX;
+		
 		private static var GRIDMOVE:int = 16;	// Unit moves along a grid
 		private static var FREEMOVE:int = 1;	// Unit moves freely
 		
@@ -28,7 +33,8 @@ package
 		
 		public function TestSprite(X:Number = 0, Y:Number = 0, SimpleGraphic:Class = null)
 		{
-			super(X, Y);
+			super(X, Y, UNIT_GFX);
+			this.color = Math.random() * 0xAAAAAA;
 			movementTimer.addEventListener(TimerEvent.TIMER, moveUnit);
 		}
 		
