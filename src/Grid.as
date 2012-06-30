@@ -137,57 +137,55 @@ package
 			}
 		}
 		
+		/**
+		 * Auto-completes / auto-predicts the gap between the currently selected square,
+		 * and the previously selected square. To be used when two squares aren't adjacent.
+		 * Completion is done in a diagonal manner, and modifies the "selected" array,
+		 * keeping order as it goes.
+		 * Params:
+		 * @previous - The last selected square parallel to another square
+		 * @current - The square the cursor is currently over
+		 */
 		public function autocompletePath(previous:Square, current:Square):void
 		{
-			trace("Move to " + current.gridX + ", " + current.gridY);
-			var diffX:int = current.gridX - previous.gridX;
+			// Sets up initial varibles
+			var diffX:int = current.gridX - previous.gridX; // Diff finds the distance between the previous and current grid
 			var diffY:int = current.gridY - previous.gridY;
-			var directionX:int=0;
-			if(diffX != 0) directionX = diffX / Math.abs(diffX);
+			var directionX:int=0;									// Two directional statements find which direction to autocomplete in.
+			if(diffX != 0) directionX = diffX / Math.abs(diffX);	// -1 is up / left, 0 is no change in direction, 1 is down / right.
 			var directionY:int=0;
 			if(diffY != 0) directionY = diffY / Math.abs(diffY);
+			// The square to be autocompleted
 			var sq:Square;
-			
-			trace("the difference between (" + previous.gridX + ", " + previous.gridY + ") and (" + current.gridX + ", " + current.gridY + ") is " + diffX + ", " + diffY); 
-			trace("We need to move in a direction of " + directionX + ", " + directionY);
 
+			// The current position of "sq" / "previous" is not at the same position as the "current" square
 			while(diffX != 0 || diffY != 0)
 			{
+				// Square is not in-line with the X axis
 				if(diffX!=0)
 				{
-					directionX = diffX / Math.abs(diffX);
-					
-					trace("X: the difference between (" + previous.gridX + ", " + previous.gridY + ") and (" + current.gridX + ", " + current.gridY + ") is " + diffX + ", " + diffY); 
-					trace("X: We need to move in a direction of " + directionX + ", " + directionY);
-					
-					sq = grid[(previous.gridX + directionX)][previous.gridY];
-					// add to array
+					directionX = diffX / Math.abs(diffX);						// Recalculate direction heading				
+					sq = grid[(previous.gridX + directionX)][previous.gridY];	// Move square to next location
+					// Update square on the board
 					sq.setColor(0xFF9999);
 					sq.setAlpha(sq.MEDIUM_SPRITE_ALPHA);
 					sq.setSelected(true);
-					selected.push(sq);
-					
-					previous = sq;
-					
-					diffX -= directionX;
+					selected.push(sq);											// Put square in array
+					previous = sq;												// Update location of previously adjacent square
+					diffX -= directionX;										// Update difference between previous and current on X axis
 				}
 				
+				// Square is not in-line with the Y axis
 				if(diffY!=0)
 				{
 					directionY = diffY / Math.abs(diffY);
-					
-					trace("Y: the difference between (" + previous.gridX + ", " + previous.gridY + ") and (" + current.gridX + ", " + current.gridY + ") is " + diffX + ", " + diffY); 
-					trace("Y: We need to move in a direction of " + directionX + ", " + directionY);
-
 					sq = grid[previous.gridX][previous.gridY + directionY];
-					// add to array
+					// Update square on the board
 					sq.setColor(0xFF9999);
 					sq.setAlpha(sq.MEDIUM_SPRITE_ALPHA);
 					sq.setSelected(true);
 					selected.push(sq);	
-					
 					previous = sq;
-					
 					diffY -= directionY;	
 				}
 			}
