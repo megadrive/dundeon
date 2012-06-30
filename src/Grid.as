@@ -167,7 +167,7 @@ package
 					directionX = diffX / Math.abs(diffX);						// Recalculate direction heading				
 					sq = grid[(previous.gridX + directionX)][previous.gridY];	// Move square to next location
 					// Update square on the board
-					sq.setColor(0xFF9999);
+					sq.setColor(sq.MEDIUM_SPRITE_SELECTED_COLOR);
 					sq.setAlpha(sq.MEDIUM_SPRITE_ALPHA);
 					sq.setSelected(true);
 					selected.push(sq);											// Put square in array
@@ -181,7 +181,7 @@ package
 					directionY = diffY / Math.abs(diffY);
 					sq = grid[previous.gridX][previous.gridY + directionY];
 					// Update square on the board
-					sq.setColor(0xFF9999);
+					sq.setColor(sq.MEDIUM_SPRITE_SELECTED_COLOR);
 					sq.setAlpha(sq.MEDIUM_SPRITE_ALPHA);
 					sq.setSelected(true);
 					selected.push(sq);	
